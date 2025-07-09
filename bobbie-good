@@ -1,0 +1,38 @@
+bobbie-good/
+├── Dockerfile
+├── replicate.yaml
+└── main.py
+FROM python:3.10-slim
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libgl1 \
+    libglib2.0-0
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "main.py"]
+opencv-python
+numpy
+Pillow
+import cv2
+import numpy as np
+from PIL import Image
+import io
+import replicate
+def predict(image: Image.Image) -> Image.Image:
+    # Convert to grayscale
+    gray = np.array(image.convert('L'))
+    # Apply edge detection
+    edges = cv2.Canny(gray, threshold1=50, threshold2=150)
+    # Convert back to PIL Image
+    return Image.fromarray(edges)
+name: klebersetin/bobbie-good
+description: Transforma fotos em imagens de contorno preto e branco para colorir
+runtime: python3
+handler: main.py:predict
+input:
+  image:
+    type: image
+    description: Foto que será transformada
+output:
+  type: image
