@@ -1,0 +1,6 @@
+name: foto-para-colorir
+description: Converte uma imagem em desenho de contorno em preto e branco, ideal para impressão e pintura.
+python_version: "3.9"
+run:
+  command: "python predict.py"
+  predict: "predict.py:predict"
